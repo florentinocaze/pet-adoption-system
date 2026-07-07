@@ -1,3 +1,16 @@
-.idea
-.code
-.vscode
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Compilação Java
+*.class
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Dados gerados em runtime
+registeredPets/
