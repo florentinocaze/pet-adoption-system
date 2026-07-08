@@ -15,6 +15,7 @@ public class StringFormatter {
 
     public static String formatRegisteredPetFileName(String date, String name) {
         name = StringFormatter.removeAccents(name);
+        name = name.replace("-", "");
         return Constants.REGISTERED_PETS_DIRECTORY_PATH + "/" + date + "-" + name + ".txt";
     }
 
