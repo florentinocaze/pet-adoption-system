@@ -8,4 +8,6 @@ public class Constants {
     public static final double MAXIMUM_WEIGHT = 60;
 
     public static final String FORM_PATH = "resources/form.txt";
+
+    public static final String NOT_INFORMED = "NÃO INFORMADO";
 }
