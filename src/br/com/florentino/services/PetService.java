@@ -174,11 +174,13 @@ public class PetService {
                     return age;
                 }
 
-                age = NumberParser.parseDouble(ageText);
-                age = age / 12;
-
                 try {
+                    age = NumberParser.parseDouble(ageText);
+                    age = age / 12;
                     PetValidator.validateAge(age);
+                } catch (NumberFormatException e) {
+                    System.out.println("Idade inválida. Digite somente números.");
+                    continue;
                 } catch (InvalidAgeException e) {
                     System.out.println(e.getMessage());
                     continue;
@@ -195,9 +197,8 @@ public class PetService {
                     return age;
                 }
 
-                age = NumberParser.parseDouble(ageText);
-
                 try {
+                    age = NumberParser.parseDouble(ageText);
                     PetValidator.validateAge(age);
                 } catch (NumberFormatException e) {
                     System.out.println("Idade inválida. Digite somente números.");
