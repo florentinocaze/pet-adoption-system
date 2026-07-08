@@ -2,9 +2,26 @@ package br.com.florentino.utils;
 
 import java.text.DecimalFormat;
 import java.text.Normalizer;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 public class StringFormatter {
+    public static String formatDate() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(Constants.FILE_DATE_FORMAT);
+        return now.format(dateTimeFormatter);
+    }
+
+    public static String formatRegisteredPetFileName(String date, String name) {
+        name = StringFormatter.removeAccents(name);
+        return Constants.REGISTERED_PETS_DIRECTORY_PATH + "/" + date + "-" + name + ".txt";
+    }
+
+    public static String formatName(String name) {
+        return name.toUpperCase().replace(" ", "");
+    }
+
     public static String formatNumber(double value) {
         DecimalFormat formatter = new DecimalFormat("0.##");
 
@@ -18,5 +35,4 @@ public class StringFormatter {
 
         return text;
     }
-
 }
