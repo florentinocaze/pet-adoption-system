@@ -7,10 +7,10 @@ public enum Type {
     CAT("Gato"),
     DOG("Cachorro");
 
-    private final String type;
+    private final String typeValue;
 
     Type(String type) {
-        this.type = type;
+        this.typeValue = type;
     }
 
     public static Type matchType(String type) throws InvalidTypeException {
@@ -21,7 +21,7 @@ public enum Type {
         for (Type petType : Type.values()) {
             String formattedType = StringFormatter.removeAccents(type);
 
-            if (petType.getType().equalsIgnoreCase(formattedType)){
+            if (petType.getTypeValue().equalsIgnoreCase(formattedType)){
                 return petType;
             }
         }
@@ -29,7 +29,7 @@ public enum Type {
         throw new InvalidTypeException("Tipo inválido.");
     }
 
-    public String getType() {
-        return this.type;
+    public String getTypeValue() {
+        return this.typeValue;
     }
 }

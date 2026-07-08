@@ -7,10 +7,10 @@ public enum BiologicalSex {
     MALE ("Macho"),
     FEMALE ("Femea");
 
-    private final String biologicalSex;
+    private final String biologicalSexValue;
 
     BiologicalSex(String biologicalSex) {
-        this.biologicalSex = biologicalSex;
+        this.biologicalSexValue = biologicalSex;
     }
 
     public static BiologicalSex matchBiologicalSex(String biologicalSex) throws InvalidBiologicalSexException {
@@ -21,7 +21,7 @@ public enum BiologicalSex {
         for (BiologicalSex petBiologicalSex : BiologicalSex.values()) {
             String formattedType = StringFormatter.removeAccents(biologicalSex);
 
-            if (petBiologicalSex.getBiologicalSex().equalsIgnoreCase(formattedType)){
+            if (petBiologicalSex.getBiologicalSexValue().equalsIgnoreCase(formattedType)){
                 return petBiologicalSex;
             }
         }
@@ -29,7 +29,7 @@ public enum BiologicalSex {
         throw new InvalidBiologicalSexException("Sexo biológico inválido. Digite \"macho\" ou \"fêmea\".");
     }
 
-    public String getBiologicalSex() {
-        return biologicalSex;
+    public String getBiologicalSexValue() {
+        return biologicalSexValue;
     }
 }
