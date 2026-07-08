@@ -54,7 +54,7 @@ public class PetService {
         String name;
 
         while (true) {
-            System.out.println(question);
+            System.out.print(question + " ");
 
             name = scanner.nextLine();
             name = StringFormatter.removeAccents(name);
@@ -75,7 +75,7 @@ public class PetService {
         Type type;
 
         while (true) {
-            System.out.println(question);
+            System.out.print(question + " ");
 
             typeText = scanner.nextLine();
             typeText = StringFormatter.removeAccents(typeText);
@@ -96,7 +96,7 @@ public class PetService {
         BiologicalSex biologicalSex;
 
         while (true) {
-            System.out.println(question);
+            System.out.print(question + " ");
 
             biologicalSexText = scanner.nextLine();
             biologicalSexText = StringFormatter.removeAccents(biologicalSexText);
@@ -156,7 +156,7 @@ public class PetService {
         while (true) {
             System.out.println(question);
 
-            System.out.print("5.1 – O pet tem menos de 1 ano de idade ? Digite \"1\" para \"SIM\" ou \"2\" para \"NÃO\": ");
+            System.out.print("5.1 – O pet tem menos de 1 ano de idade? Digite \"1\" para \"SIM\" ou \"2\" para \"NÃO\": ");
 
             String option = scanner.nextLine();
 
@@ -217,7 +217,7 @@ public class PetService {
         Double weight = null;
 
         while (true) {
-            System.out.println(question);
+            System.out.print(question + " ");
 
             weightText = scanner.nextLine();
 
@@ -244,7 +244,7 @@ public class PetService {
         String race;
 
         while (true) {
-            System.out.println(question);
+            System.out.print(question + " ");
 
             race = scanner.nextLine();
             race = StringFormatter.removeAccents(race);
