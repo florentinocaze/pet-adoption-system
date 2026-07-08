@@ -11,15 +11,15 @@ import br.com.florentino.utils.StringFormatter;
 
 public class PetValidator {
     public static void validateName(String name) throws InvalidNameException {
-        String pattern = "^[A-Za-z]+( [A-Za-z]+)+$";
+        String pattern = "^[A-Za-z-]+( [A-Za-z-]+)+$";
 
         if (!name.matches(pattern)) {
-            throw new InvalidNameException("Nome inválido. Digite somente letras de A-Z.");
+            throw new InvalidNameException("Nome inválido. Digite nome e sobrenome completos do pet, contendo somente letras de A-Z.");
         }
     }
 
     public static void validateRace(String race) throws InvalidRaceException {
-        String pattern = "^[A-Za-z]+( [A-Za-z]+)*$";
+        String pattern = "^[A-Za-z-]+( [A-Za-z-]+)*$";
 
         if (!race.equals(Constants.NOT_INFORMED) && !race.matches(pattern)) {
             throw new InvalidRaceException("Raça inválida. Digite somente letras de A-Z.");
@@ -34,7 +34,7 @@ public class PetValidator {
 
     public static void validateWeight(Double weight) throws InvalidWeightException {
         if (weight < Constants.MINIMUM_WEIGHT || weight > Constants.MAXIMUM_WEIGHT) {
-            throw new InvalidWeightException("Peso não pode ser menor que " + StringFormatter.formatNumber(Constants.MINIMUM_WEIGHT) + "kg ou maior que " + StringFormatter.formatNumber(Constants.MAXIMUM_WEIGHT) + " kg.");
+            throw new InvalidWeightException("Peso não pode ser menor que " + StringFormatter.formatNumber(Constants.MINIMUM_WEIGHT) + " kg ou maior que " + StringFormatter.formatNumber(Constants.MAXIMUM_WEIGHT) + " kg.");
         }
     }
 
