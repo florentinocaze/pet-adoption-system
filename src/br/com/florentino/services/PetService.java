@@ -134,6 +134,8 @@ public class PetService {
 
             if (number.isBlank()) {
                 number = Constants.NOT_INFORMED;
+
+                return new Address(city, street, number);
             }
 
             Address address = new Address(city, street, number);
