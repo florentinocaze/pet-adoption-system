@@ -19,6 +19,11 @@ public class StringFormatter {
         return Constants.REGISTERED_PETS_DIRECTORY_PATH + "/" + date + "-" + name + ".txt";
     }
 
+    public static String formatPetData(String data) {
+        String[] splittedData = data.split(" – ");
+        return splittedData[1];
+    }
+
     public static String formatName(String name) {
         return name.toUpperCase().replace(" ", "");
     }
