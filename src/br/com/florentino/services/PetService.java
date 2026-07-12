@@ -12,6 +12,7 @@ import br.com.florentino.utils.StringFormatter;
 import br.com.florentino.validator.PetValidator;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -48,6 +49,15 @@ public class PetService {
         );
 
         petRepository.save(pet);
+    }
+
+    public List<Pet> listAllPets() {
+        try {
+            return petRepository.findAll();
+        } catch (IOException e) {
+            System.out.println("Pets não encontrados.");
+            return new ArrayList<>();
+        }
     }
 
     private String askName(String question) {
@@ -264,5 +274,4 @@ public class PetService {
             return race;
         }
     }
-
 }
