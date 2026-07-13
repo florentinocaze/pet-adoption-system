@@ -60,6 +60,116 @@ public class PetService {
         }
     }
 
+    public List<Pet> listPetsByCriteria() throws IOException {
+        Type typeCriteria = askTypeCriteria();
+
+        String nameCriteria = null;
+        BiologicalSex biologicalSexCriteria = null;
+        String cityCriteria = null;
+        String numberCriteria = null;
+        String streetCriteria = null;
+        Double ageCriteria = null;
+        Double weightCriteria = null;
+        String raceCriteria = null;
+
+        int criteriaChosen = 0;
+
+        while (criteriaChosen < 2) {
+            System.out.println("Deseja adicionar outro critério à busca?");
+            System.out.println("[1] Sim;");
+            System.out.println("[2] Não.");
+            System.out.print("Escolha uma opção: ");
+            String wantsMore = scanner.nextLine();
+
+            if (wantsMore.equals("2")) {
+                break;
+            }
+
+            if (!wantsMore.equals("1")) {
+                System.out.println("Opção inválida. Tente novamente.");
+                continue;
+            }
+
+            System.out.println("Selecione um dos critérios abaixo:");
+            System.out.println("[1] Nome;");
+            System.out.println("[2] Sexo biológico;");
+            System.out.println("[3] Cidade;");
+            System.out.println("[4] Número;");
+            System.out.println("[5] Rua;");
+            System.out.println("[6] Idade;");
+            System.out.println("[7] Peso;");
+            System.out.println("[8] Raça.");
+            System.out.print("Escolha uma opção: ");
+            String criteriaOption = scanner.nextLine();
+
+            switch (criteriaOption) {
+                case "1" -> {
+                    System.out.print("Digite o nome completo ou parcial: ");
+                    nameCriteria = StringFormatter.removeAccents(scanner.nextLine());
+
+                    criteriaChosen++;
+                }
+                case "2" -> {
+                    System.out.print("Digite o sexo biológico: ");
+                    try {
+                        biologicalSexCriteria = BiologicalSex.matchBiologicalSex(StringFormatter.removeAccents(scanner.nextLine()));
+                    } catch (InvalidBiologicalSexException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                    criteriaChosen++;
+                }
+                case "3" -> {
+                    System.out.print("Digite a cidade: ");
+                    cityCriteria = StringFormatter.removeAccents(scanner.nextLine());
+
+                    criteriaChosen++;
+                }
+                case "4" -> {
+                    System.out.print("Digite o número: ");
+                    numberCriteria = StringFormatter.removeAccents(scanner.nextLine());
+
+                    criteriaChosen++;
+                }
+                case "5" -> {
+                    System.out.print("Digite a rua: ");
+                    streetCriteria = StringFormatter.removeAccents(scanner.nextLine());
+
+                    criteriaChosen++;
+                }
+                case "6" -> {
+                    System.out.print("Digite a idade: ");
+                    try {
+                        ageCriteria = NumberParser.parseDouble(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Número inválido.");
+                    }
+
+                    criteriaChosen++;
+                }
+                case "7" -> {
+                    System.out.print("Digite o peso: ");
+                    try {
+                        weightCriteria = NumberParser.parseDouble(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Número inválido.");
+                    }
+
+                    criteriaChosen++;
+                }
+                case "8" -> {
+                    System.out.print("Digite a raça: ");
+                    raceCriteria = StringFormatter.removeAccents(scanner.nextLine());
+
+                    criteriaChosen++;
+                }
+                default -> System.out.println("Opção inválida.");
+            }
+        }
+
+        return filterPets(typeCriteria, nameCriteria, biologicalSexCriteria, cityCriteria, numberCriteria, streetCriteria, ageCriteria, weightCriteria, raceCriteria);
+    }
+
     private String askName(String question) {
         String name;
 
@@ -273,5 +383,68 @@ public class PetService {
 
             return race;
         }
+    }
+
+    private Type askTypeCriteria() {
+        while (true) {
+            System.out.println("Qual tipo de pet você deseja buscar?");
+            System.out.println("[1] Cachorro;");
+            System.out.println("[2] Gato.");
+            System.out.print("Escolha uma opção: ");
+
+            String option = scanner.nextLine();
+
+            if (option.equals("1")) return Type.DOG;
+            if (option.equals("2")) return Type.CAT;
+
+            System.out.println("Opção inválida.");
+        }
+    }
+
+    private List<Pet> filterPets(Type type, String name, BiologicalSex biologicalSex, String city, String number, String street, Double age, Double weight, String race) throws IOException {
+        List<Pet> allPets = petRepository.findAll();
+        List<Pet> filteredPets = new ArrayList<>();
+
+        for (Pet pet : allPets) {
+            boolean matchesType = pet.getType() == type;
+
+            boolean matchesName = (name == null) ||
+                    (pet.getName() != null &&
+                            StringFormatter.removeAccents(pet.getName()).toLowerCase().contains(name.toLowerCase()));
+
+            boolean matchesBiologicalSex = (biologicalSex == null) ||
+                    (pet.getBiologicalSex() != null &&
+                            pet.getBiologicalSex() == biologicalSex);
+
+            boolean matchesCity = (city == null) ||
+                    (pet.getAddress().getCity() != null &&
+                            StringFormatter.removeAccents(pet.getAddress().getCity()).toLowerCase().contains(city.toLowerCase()));
+
+            boolean matchesNumber = (number == null) ||
+                    (pet.getAddress().getNumber() != null &&
+                            StringFormatter.removeAccents(pet.getAddress().getNumber()).toLowerCase().contains(number.toLowerCase()));
+
+            boolean matchesStreet = (street == null) ||
+                    (pet.getAddress().getStreet() != null &&
+                            StringFormatter.removeAccents(pet.getAddress().getStreet()).toLowerCase().contains(street.toLowerCase()));
+
+            boolean matchesAge = (age == null) ||
+                    (pet.getAge() != null &&
+                            pet.getAge().equals(age));
+
+            boolean matchesWeight = (weight == null) ||
+                    (pet.getWeight() != null &&
+                            pet.getWeight().equals(weight));
+
+            boolean matchesRace = (race == null) ||
+                    (pet.getRace() != null &&
+                            StringFormatter.removeAccents(pet.getRace()).toLowerCase().contains(race.toLowerCase()));
+
+            if (matchesType && matchesName && matchesBiologicalSex && matchesCity && matchesNumber && matchesStreet && matchesAge && matchesWeight && matchesRace) {
+                filteredPets.add(pet);
+            }
+        }
+
+        return filteredPets;
     }
 }
