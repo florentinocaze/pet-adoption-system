@@ -1,5 +1,7 @@
 package br.com.florentino.utils;
 
+import br.com.florentino.entity.Pet;
+
 import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.time.LocalDateTime;
@@ -22,6 +24,19 @@ public class StringFormatter {
     public static String formatPetData(String data) {
         String[] splittedData = data.split(" – ");
         return splittedData[1];
+    }
+
+    public static String formatPetDataForDisplay(int index, Pet pet) {
+        return "[" + index + "] " +
+                pet.getName() + " - " +
+                pet.getType().getTypeValue() + " - " +
+                pet.getBiologicalSex().getBiologicalSexValue() + " - " +
+                pet.getAddress().getStreet() + ", " +
+                pet.getAddress().getNumber() + " - " +
+                pet.getAddress().getCity() + " - " +
+                (pet.getAge() == null ? Constants.NOT_INFORMED : (StringFormatter.formatNumber(pet.getAge()) + " anos")) + " - " +
+                (pet.getWeight() == null ? Constants.NOT_INFORMED : (StringFormatter.formatNumber(pet.getWeight()) + " kg")) + " - " +
+                pet.getRace();
     }
 
     public static String formatName(String name) {
