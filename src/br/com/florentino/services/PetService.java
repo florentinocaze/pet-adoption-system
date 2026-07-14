@@ -51,6 +51,179 @@ public class PetService {
         petRepository.save(pet);
     }
 
+    public void updatePet() throws IOException {
+        List<Pet> filteredPets = listPetsByCriteria();
+
+        if (filteredPets.isEmpty()) {
+            return;
+        }
+
+        int index = 1;
+
+        for (Pet pet : filteredPets) {
+            System.out.println(StringFormatter.formatPetDataForDisplay(index++, pet));
+        }
+
+        while (true) {
+            int petOption;
+            Pet pet;
+
+            System.out.print("Selecione o pet que você deseja alterar: ");
+            try {
+                petOption = Integer.parseInt(scanner.nextLine());
+                pet = filteredPets.get(petOption - 1);
+            } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                System.out.println("Número inválido. Tente novamente.");
+                continue;
+            }
+
+
+            System.out.println("Selecione o dado que você deseja alterar:");
+            System.out.println("[1] Nome;");
+            System.out.println("[2] Cidade;");
+            System.out.println("[3] Número;");
+            System.out.println("[4] Rua;");
+            System.out.println("[5] Idade;");
+            System.out.println("[6] Peso;");
+            System.out.println("[7] Raça.");
+            System.out.print("Escolha uma opção: ");
+            String alterDataOption = scanner.nextLine();
+
+            String term;
+
+            switch (alterDataOption) {
+                case "1" -> {
+                    System.out.print("Insira o novo nome: ");
+                    term = StringFormatter.removeAccents(scanner.nextLine());
+
+                    try {
+                        PetValidator.validateName(term);
+                    } catch (InvalidNameException e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }
+                }
+                case "2" -> {
+                    System.out.print("Insira a nova cidade: ");
+                    term = StringFormatter.removeAccents(scanner.nextLine());
+
+                    Address address = new Address(term, pet.getAddress().getStreet(), pet.getAddress().getNumber());
+
+                    try {
+                        PetValidator.validateAddress(address);
+                    } catch (InvalidAddressException e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }
+                }
+                case "3" -> {
+                    System.out.print("Insira o novo número: ");
+                    term = StringFormatter.removeAccents(scanner.nextLine());
+
+                    if (term.isBlank()) {
+                        term = Constants.NOT_INFORMED;
+                    }
+
+                    Address address = new Address(pet.getAddress().getCity(), pet.getAddress().getStreet(), term);
+
+                    try {
+                        PetValidator.validateAddress(address);
+                    } catch (InvalidAddressException e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }
+                }
+                case "4" -> {
+                    System.out.print("Insira a nova rua: ");
+                    term = StringFormatter.removeAccents(scanner.nextLine());
+
+                    Address address = new Address(pet.getAddress().getCity(), term, pet.getAddress().getNumber());
+
+                    try {
+                        PetValidator.validateAddress(address);
+                    } catch (InvalidAddressException e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }
+                }
+                case "5" -> {
+                    System.out.print("Insira a nova idade: ");
+                    term = scanner.nextLine();
+
+                    if (term.isBlank()) {
+                        term = null;
+                    }
+
+                    if (term != null) {
+                        Double parsedTerm = NumberParser.parseDouble(term);
+
+                        try {
+                            PetValidator.validateAge(parsedTerm);
+                        }  catch (InvalidAgeException e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                    }
+                }
+                case "6" -> {
+                    System.out.print("Insira o novo peso: ");
+                    term = scanner.nextLine();
+
+                    if (term.isBlank()) {
+                        term = null;
+                    }
+
+                    if (term != null) {
+                        Double parsedTerm = NumberParser.parseDouble(term);
+
+                        try {
+                            PetValidator.validateWeight(parsedTerm);
+                        } catch (InvalidWeightException e) {
+                            System.out.println(e.getMessage());
+                            continue;
+                        }
+                    }
+                }
+                case "7" -> {
+                    System.out.print("Insira a nova raça: ");
+                    term = StringFormatter.removeAccents(scanner.nextLine());
+
+                    if (term.isBlank()) {
+                        term = Constants.NOT_INFORMED;
+                    }
+
+                    try {
+                        PetValidator.validateRace(term);
+                    } catch (InvalidRaceException e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }
+                }
+                default -> {
+                    System.out.println("Opção inválida. Tente novamente.");
+                    continue;
+                }
+            }
+
+            petRepository.update(pet, alterDataOption, term);
+
+            System.out.println("Você deseja fazer mais alguma mudança?");
+            System.out.println("[1] Sim;");
+            System.out.println("[2] Não.");
+            System.out.print("Escolha uma opção: ");
+
+            String option = scanner.nextLine();
+
+            if (option.equals("2")) {
+                break;
+            }
+
+            if (!option.equals("1")) {
+                System.out.println("Opção inválida.");
+            }
+        }
+    }
+
     public List<Pet> listAllPets() {
         try {
             return petRepository.findAll();
