@@ -11,6 +11,7 @@ public class Pet {
     private Double age;
     private Double weight;
     private String race;
+    private String filePath;
 
     public Pet(String name, Type type, BiologicalSex biologicalSex, Address address, Double age, Double weight, String race) {
         this.name = name;
@@ -64,5 +65,13 @@ public class Pet {
 
     public void setRace(String race) {
         this.race = race;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }
