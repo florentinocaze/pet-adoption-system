@@ -224,6 +224,79 @@ public class PetService {
         }
     }
 
+    public void deletePet() throws IOException {
+        List<Pet> filteredPets = listPetsByCriteria();
+
+        if (filteredPets.isEmpty()) {
+            return;
+        }
+
+        while (true) {
+            int index = 1;
+
+            for (Pet pet : filteredPets) {
+                System.out.println(StringFormatter.formatPetDataForDisplay(index++, pet));
+            }
+
+            int petOption;
+            Pet pet;
+
+            System.out.print("Selecione o pet que você deseja excluir o cadastro: ");
+
+            try {
+                petOption = Integer.parseInt(scanner.nextLine());
+                pet = filteredPets.get(petOption - 1);
+            } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                System.out.println("Número inválido. Tente novamente.");
+                continue;
+            }
+
+            System.out.println("ATENÇÃO! Ao excluir o pet selecionado, todos os dados serão perdidos permanentemente. Deseja confirmar a exclusão?");
+            System.out.println("[1] Sim;");
+            System.out.println("[2] Não.");
+            System.out.print("Confirme sua escolha: ");
+            String confirmationOption = scanner.nextLine();
+
+            if (confirmationOption.equals("2")) {
+                return;
+            }
+
+            if (!confirmationOption.equals("1")) {
+                System.out.println("Opção inválida. Tente novamente.");
+                continue;
+            }
+
+            petRepository.delete(pet);
+            filteredPets.remove(petOption - 1);
+
+            System.out.println("Cadastro deletado com sucesso.");
+
+            System.out.println();
+
+            if (filteredPets.isEmpty()) {
+                System.out.println("Retornando ao menu principal.");
+                return;
+            }
+
+            System.out.println("Você deseja excluir mais algum cadastro?");
+            System.out.println("[1] Sim;");
+            System.out.println("[2] Não.");
+            System.out.print("Escolha uma opção: ");
+
+            String option = scanner.nextLine();
+
+            if (option.equals("2")) {
+                System.out.println("Retornando ao menu principal.");
+                return;
+            }
+
+            if (!option.equals("1")) {
+                System.out.println("Opção inválida.");
+            }
+        }
+
+    }
+
     public List<Pet> listAllPets() {
         try {
             return petRepository.findAll();

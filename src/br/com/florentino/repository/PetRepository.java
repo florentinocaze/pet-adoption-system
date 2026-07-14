@@ -70,6 +70,90 @@ public class PetRepository {
         }
     }
 
+    public void update(Pet pet, String option, String replacement) {
+        Path petFilePath = Paths.get(pet.getFilePath());
+
+        String newLine;
+
+        switch (option) {
+            case "1" -> {
+                pet.setName(replacement);
+
+                newLine = "1 – " + pet.getName();
+
+                editLine(petFilePath, 0, newLine);
+            }
+            case "2" -> {
+                pet.getAddress().setCity(replacement);
+
+                newLine = "4 – " + pet.getAddress().getStreet() + ", " + pet.getAddress().getNumber() + ", " + pet.getAddress().getCity();
+
+                editLine(petFilePath, 3, newLine);
+            }
+            case "3" -> {
+                if (replacement.isBlank()) {
+                    pet.getAddress().setNumber(Constants.NOT_INFORMED);
+                } else {
+                    pet.getAddress().setNumber(replacement);
+                }
+
+                newLine = "4 – " + pet.getAddress().getStreet() + ", " + pet.getAddress().getNumber() + ", " + pet.getAddress().getCity();
+
+                editLine(petFilePath, 3, newLine);
+            }
+            case "4" -> {
+                pet.getAddress().setStreet(replacement);
+
+                newLine = "4 – " + pet.getAddress().getStreet() + ", " + pet.getAddress().getNumber() + ", " + pet.getAddress().getCity();
+
+                editLine(petFilePath, 3, newLine);
+            }
+            case "5" -> {
+                if (replacement == null) {
+                    pet.setAge(null);
+                } else {
+                    pet.setAge(NumberParser.parseDouble(replacement));
+                }
+
+                if (pet.getAge() == null) {
+                    newLine = "5 – " + Constants.NOT_INFORMED;
+                } else {
+                    newLine = "5 – " + StringFormatter.formatNumber(pet.getAge()) + " anos";
+                }
+
+                editLine(petFilePath, 4, newLine);
+            }
+            case "6" -> {
+                if (replacement == null) {
+                    pet.setWeight(null);
+                } else {
+                    pet.setWeight(NumberParser.parseDouble(replacement));
+                }
+
+                if (pet.getWeight() == null) {
+                    newLine = "6 – " + Constants.NOT_INFORMED;
+                } else {
+                    newLine = "6 – " + StringFormatter.formatNumber(pet.getWeight()) + " kg";
+                }
+
+                editLine(petFilePath, 5, newLine);
+            }
+            case "7" -> {
+                pet.setRace(replacement);
+
+                newLine = "7 – " + pet.getRace();
+
+                editLine(petFilePath, 6, newLine);
+            }
+        }
+    }
+
+    public void delete(Pet pet) throws IOException {
+        Path petFilePath = Paths.get(pet.getFilePath());
+
+        Files.delete(petFilePath);
+    }
+
     public List<Pet> findAll() throws IOException {
         String petsDirectoryPath = Constants.REGISTERED_PETS_DIRECTORY_PATH;
 
@@ -174,84 +258,6 @@ public class PetRepository {
         }
 
         return new ArrayList<>();
-    }
-
-    public void update(Pet pet, String option, String replacement) {
-        Path petFilePath = Paths.get(pet.getFilePath());
-
-        String newLine;
-
-        switch (option) {
-            case "1" -> {
-                pet.setName(replacement);
-
-                newLine = "1 – " + pet.getName();
-
-                editLine(petFilePath, 0, newLine);
-            }
-            case "2" -> {
-                pet.getAddress().setCity(replacement);
-
-                newLine = "4 – " + pet.getAddress().getStreet() + ", " + pet.getAddress().getNumber() + ", " + pet.getAddress().getCity();
-
-                editLine(petFilePath, 3, newLine);
-            }
-            case "3" -> {
-                if (replacement.isBlank()) {
-                    pet.getAddress().setNumber(Constants.NOT_INFORMED);
-                } else {
-                    pet.getAddress().setNumber(replacement);
-                }
-
-                newLine = "4 – " + pet.getAddress().getStreet() + ", " + pet.getAddress().getNumber() + ", " + pet.getAddress().getCity();
-
-                editLine(petFilePath, 3, newLine);
-            }
-            case "4" -> {
-                pet.getAddress().setStreet(replacement);
-
-                newLine = "4 – " + pet.getAddress().getStreet() + ", " + pet.getAddress().getNumber() + ", " + pet.getAddress().getCity();
-
-                editLine(petFilePath, 3, newLine);
-            }
-            case "5" -> {
-                if (replacement == null) {
-                    pet.setAge(null);
-                } else {
-                    pet.setAge(NumberParser.parseDouble(replacement));
-                }
-
-                if (pet.getAge() == null) {
-                    newLine = "5 – " + Constants.NOT_INFORMED;
-                } else {
-                    newLine = "5 – " + StringFormatter.formatNumber(pet.getAge()) + " anos";
-                }
-
-                editLine(petFilePath, 4, newLine);
-            }
-            case "6" -> {
-                if (replacement == null) {
-                    pet.setWeight(null);
-                } else {
-                    pet.setWeight(NumberParser.parseDouble(replacement));
-                }
-
-                if (pet.getWeight() == null) {
-                    newLine = "6 – " + Constants.NOT_INFORMED;
-                } else {
-                    newLine = "6 – " + StringFormatter.formatNumber(pet.getWeight()) + " kg";
-                }
-
-                editLine(petFilePath, 5, newLine);
-            }
-            case "7" -> {
-                pet.setRace(replacement);
-
-                newLine = "7 – " + pet.getRace();
-
-                editLine(petFilePath, 6, newLine);
-            }
-        }
     }
 
     private void editLine(Path petFilePath, int lineToEdit, String lineToReplace) {
