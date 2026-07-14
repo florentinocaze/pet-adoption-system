@@ -27,6 +27,8 @@ public class PetRepository {
         String name = StringFormatter.formatName(pet.getName());
         String fileName = StringFormatter.formatRegisteredPetFileName(date, name);
 
+        pet.setFilePath(fileName);
+
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName, StandardCharsets.UTF_8))) {
             bufferedWriter.write("1 – " + pet.getName());
             bufferedWriter.newLine();
@@ -59,6 +61,8 @@ public class PetRepository {
             bufferedWriter.write("7 – " + pet.getRace());
 
             bufferedWriter.flush();
+
+            System.out.println("Pet salvo com sucesso.");
         } catch (IOException e) {
             System.out.println("Falha ao salvar o pet.");
         }
@@ -158,6 +162,7 @@ public class PetRepository {
                     // New pet
 
                     Pet petObject = new Pet(name, type, biologicalSex, address, age, weight, race);
+                    petObject.setFilePath(pet.getPath());
 
                     petsList.add(petObject);
                 }
