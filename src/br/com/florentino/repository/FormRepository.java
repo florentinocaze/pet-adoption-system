@@ -37,4 +37,33 @@ public class FormRepository {
             System.out.println("Erro ao adicionar pergunta ao formulário.");
         }
     }
+
+    public void replaceFromForm(int index, String question) {
+        Path formFilePath = Paths.get(Constants.FORM_PATH);
+
+        try {
+            List<String> lines = Files.readAllLines(formFilePath, StandardCharsets.UTF_8);
+
+            if (index >= 0 && index < lines.size()) {
+                lines.set(index, (index + 1) + " – " + question);
+            }
+
+            List<String> cleanedLines = new ArrayList<>();
+
+            for (String line : lines) {
+                String trimmedLine = line.replace("\n", "").replace("\r", "").trim();
+                if (!trimmedLine.isEmpty()) {
+                    cleanedLines.add(trimmedLine);
+                }
+            }
+
+            String finalContent = String.join(System.lineSeparator(), cleanedLines);
+
+            Files.writeString(formFilePath, finalContent, StandardCharsets.UTF_8);
+
+            System.out.println("Pergunta alterada com sucesso!");
+        } catch (IOException e) {
+            System.err.println("Erro ao alterar pergunta.");
+        }
+    }
 }
