@@ -66,4 +66,38 @@ public class FormRepository {
             System.err.println("Erro ao alterar pergunta.");
         }
     }
+
+    public void deleteFromForm(int index) {
+        Path formFilePath = Paths.get(Constants.FORM_PATH);
+
+        try {
+            List<String> lines = Files.readAllLines(formFilePath, StandardCharsets.UTF_8);
+
+            lines.remove(index);
+
+            for (int i = 0; i < lines.size(); i++) {
+                String[] splittedLine = lines.get(i).split(" – ");
+                lines.set(i, (i + 1) + " – " + splittedLine[1]);
+            }
+
+            List<String> cleanedLines = new ArrayList<>();
+
+            for (String line : lines) {
+                String trimmedLine = line.replace("\n", "").replace("\r", "").trim();
+                if (!trimmedLine.isEmpty()) {
+                    cleanedLines.add(trimmedLine);
+                }
+            }
+
+            String finalContent = String.join(System.lineSeparator(), cleanedLines);
+
+            Files.writeString(formFilePath, finalContent, StandardCharsets.UTF_8);
+
+            System.out.println("Pergunta removida com sucesso!");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Erro ao buscar índice da pergunta selecionada.");
+        } catch (IOException e) {
+            System.out.println("Erro ao remover a pergunta selecionada.");
+        }
+    }
 }

@@ -92,4 +92,55 @@ public class FormService {
             }
         }
     }
+
+    public void deleteQuestionFromForm() throws IOException {
+        List<String> questions = getQuestions();
+
+        if (questions.size() > 7) {
+            while (true) {
+                System.out.println("Perguntas disponíveis no formulário para exclusão: ");
+
+                for (int i = 7; i < questions.size(); i++) {
+                    System.out.println(questions.get(i));
+                }
+                System.out.println();
+
+                System.out.print("Insira o índice da pergunta que você deseja excluir: ");
+                int questionIndex;
+
+                try {
+                    questionIndex = Integer.parseInt(scanner.nextLine());
+                } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                    System.out.println("Número inválido. Tente novamente.");
+                    continue;
+                }
+
+                if (questionIndex <= 7 || questionIndex > questions.size()) {
+                    System.out.println("O índice da pergunta selecionada é inválido. Tente novamente.");
+                    System.out.println();
+                    continue;
+                }
+
+                formRepository.deleteFromForm(questionIndex - 1);
+                System.out.println();
+
+                System.out.println("Você deseja fazer mais alguma mudança?");
+                System.out.println("[1] Sim;");
+                System.out.println("[2] Não.");
+                System.out.print("Escolha uma opção: ");
+
+                String option = scanner.nextLine();
+
+                if (option.equals("2")) {
+                    break;
+                }
+
+                if (!option.equals("1")) {
+                    System.out.println("Opção inválida.");
+                }
+            }
+        } else {
+            System.out.println("Você ainda não criou perguntas no formulário.");
+        }
+    }
 }
