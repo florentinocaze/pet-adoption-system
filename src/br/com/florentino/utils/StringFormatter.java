@@ -26,6 +26,11 @@ public class StringFormatter {
         return splittedData[1];
     }
 
+    public static String formatPetExtraData(String data) {
+        String[] splittedData = data.split(" – ");
+        return splittedData[2];
+    }
+
     public static String formatPetDataForDisplay(int index, Pet pet) {
         return "[" + index + "] " +
                 pet.getName() + " - " +
