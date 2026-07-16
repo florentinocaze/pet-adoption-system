@@ -3,6 +3,9 @@ package br.com.florentino.entity;
 import br.com.florentino.enums.BiologicalSex;
 import br.com.florentino.enums.Type;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Pet {
     private String name;
     private final Type type;
@@ -12,6 +15,7 @@ public class Pet {
     private Double weight;
     private String race;
     private String filePath;
+    private List<String> extraAnswers;
 
     public Pet(String name, Type type, BiologicalSex biologicalSex, Address address, Double age, Double weight, String race) {
         this.name = name;
@@ -21,6 +25,11 @@ public class Pet {
         this.age = age;
         this.weight = weight;
         this.race = race;
+    }
+
+    public Pet(String name, Type type, BiologicalSex biologicalSex, Address address, Double age, Double weight, String race, List<String> extraAnswers) {
+        this(name, type, biologicalSex, address, age, weight, race);
+        this.extraAnswers = extraAnswers;
     }
 
     public String getName() {
@@ -73,5 +82,13 @@ public class Pet {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public List<String> getExtraAnswers() {
+        return extraAnswers;
+    }
+
+    public void setExtraAnswers(List<String> extraAnswers) {
+        this.extraAnswers = extraAnswers;
     }
 }
