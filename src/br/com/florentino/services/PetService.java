@@ -38,6 +38,14 @@ public class PetService {
         Double weight = askWeight(questions.get(5));
         String race = askRace(questions.get(6));
 
+        List<String> extraAnswers = new ArrayList<>();
+
+        if (questions.size() > 7) {
+            for (int i = 7; i < questions.size(); i++) {
+                extraAnswers.add(askExtraQuestion(questions.get(i)));
+            }
+        }
+
         Pet pet = new Pet(
                 name,
                 type,
@@ -45,10 +53,11 @@ public class PetService {
                 address,
                 age,
                 weight,
-                race
+                race,
+                extraAnswers
         );
 
-        petRepository.save(pet);
+        petRepository.save(pet, questions);
     }
 
     public void updatePet() throws IOException {
@@ -159,7 +168,7 @@ public class PetService {
 
                         try {
                             PetValidator.validateAge(parsedTerm);
-                        }  catch (InvalidAgeException e) {
+                        } catch (InvalidAgeException e) {
                             System.out.println(e.getMessage());
                             continue;
                         }
@@ -645,6 +654,14 @@ public class PetService {
 
             System.out.println("Opção inválida.");
         }
+    }
+
+    private String askExtraQuestion(String question) {
+        System.out.print(question + " ");
+
+        String answer = StringFormatter.removeAccents(scanner.nextLine());
+
+        return answer.isBlank() ? Constants.NOT_INFORMED : answer;
     }
 
     private List<Pet> filterPets(Type type, String name, BiologicalSex biologicalSex, String city, String number, String street, Double age, Double weight, String race) throws IOException {
