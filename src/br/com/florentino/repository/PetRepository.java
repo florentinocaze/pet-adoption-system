@@ -4,6 +4,7 @@ import br.com.florentino.entity.Address;
 import br.com.florentino.entity.Pet;
 import br.com.florentino.enums.BiologicalSex;
 import br.com.florentino.enums.Type;
+import br.com.florentino.services.FormService;
 import br.com.florentino.utils.Constants;
 import br.com.florentino.utils.NumberParser;
 import br.com.florentino.utils.StringFormatter;
@@ -16,9 +17,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class PetRepository {
-    public void save(Pet pet) {
+    public void save(Pet pet, List<String> questions) {
         File registeredPetsDirectory = new File(Constants.REGISTERED_PETS_DIRECTORY_PATH);
 
         if (!(registeredPetsDirectory.exists() && registeredPetsDirectory.isDirectory())) {
@@ -61,6 +63,21 @@ public class PetRepository {
             }
 
             bufferedWriter.write("7 – " + pet.getRace());
+
+            if (!pet.getExtraAnswers().isEmpty()) {
+                bufferedWriter.newLine();
+
+                for (int i = 0; i < pet.getExtraAnswers().size(); i++) {
+                    String[] splittedQuestion = questions.get(i + 7).split(" – ");
+                    String question = splittedQuestion[1];
+
+                    bufferedWriter.write((i + 8) + " – " + question + " – " + pet.getExtraAnswers().get(i));
+
+                    if (i < pet.getExtraAnswers().size() - 1) {
+                        bufferedWriter.newLine();
+                    }
+                }
+            }
 
             bufferedWriter.flush();
 
@@ -247,9 +264,21 @@ public class PetRepository {
 
                     // New pet
 
-                    Pet petObject = new Pet(name, type, biologicalSex, address, age, weight, race);
-                    petObject.setFilePath(pet.getPath());
+                    Pet petObject;
 
+                    if (lines.size() > 7) {
+                        List<String> extraAnswers = new ArrayList<>();
+
+                        for (int i = 7; i < lines.size(); i++) {
+                            extraAnswers.add(StringFormatter.formatPetExtraData(lines.get(i)));
+                        }
+
+                        petObject = new Pet(name, type, biologicalSex, address, age, weight, race, extraAnswers);
+                    } else {
+                        petObject = new Pet(name, type, biologicalSex, address, age, weight, race);
+                    }
+
+                    petObject.setFilePath(pet.getPath());
                     petsList.add(petObject);
                 }
 
