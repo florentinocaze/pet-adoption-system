@@ -69,9 +69,11 @@ public class PetService {
 
         int index = 1;
 
+        System.out.println("[PETS ENCONTRADOS]");
         for (Pet pet : filteredPets) {
             System.out.println(StringFormatter.formatPetDataForDisplay(index++, pet));
         }
+        System.out.println();
 
         while (true) {
             int petOption;
@@ -85,7 +87,10 @@ public class PetService {
                 System.out.println("Número inválido. Tente novamente.");
                 continue;
             }
+            System.out.println();
 
+            List<String> questions = formService.getQuestions();
+            List<String> extraAnswers = pet.getExtraAnswers();
 
             System.out.println("Selecione o dado que você deseja alterar:");
             System.out.println("[1] Nome;");
@@ -94,11 +99,21 @@ public class PetService {
             System.out.println("[4] Rua;");
             System.out.println("[5] Idade;");
             System.out.println("[6] Peso;");
-            System.out.println("[7] Raça.");
+
+            if (extraAnswers.isEmpty()) {
+                System.out.println("[7] Raça.");
+            } else {
+                System.out.println("[7] Raça;");
+                System.out.println("[8] Extra.");
+            }
+
             System.out.print("Escolha uma opção: ");
             String alterDataOption = scanner.nextLine();
+            System.out.println();
 
             String term;
+
+            Integer extraAnswerIndex = null;
 
             switch (alterDataOption) {
                 case "1" -> {
@@ -208,19 +223,56 @@ public class PetService {
                         continue;
                     }
                 }
+                case "8" -> {
+                    if (extraAnswers.isEmpty()) {
+                        System.out.println("Opção inválida. Tente novamente.");
+                        System.out.println();
+                        continue;
+                    }
+
+                    System.out.println("Insira o índice do dado que deseja alterar: ");
+                    for (int i = 7; i < questions.size(); i++) {
+                        System.out.println(questions.get(i));
+                    }
+                    System.out.print("Índice escolhido: ");
+                    int extraQuestionOption;
+
+                    try {
+                        extraQuestionOption = Integer.parseInt(scanner.nextLine());
+                    } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                        System.out.println("Número inválido. Tente novamente.");
+                        continue;
+                    }
+
+                    extraAnswerIndex = extraQuestionOption - 8;
+
+                    System.out.println();
+
+                    System.out.print("Insira a nova resposta: ");
+                    term = StringFormatter.removeAccents(scanner.nextLine());
+                    System.out.println();
+
+                    try {
+                        extraAnswers.set(extraAnswerIndex, term.isBlank() ? Constants.NOT_INFORMED : term);
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Índice de pergunta inválido. Tente novamente.");
+                        System.out.println();
+                        continue;
+                    }
+                }
                 default -> {
                     System.out.println("Opção inválida. Tente novamente.");
                     continue;
                 }
             }
 
-            petRepository.update(pet, alterDataOption, term);
+            petRepository.update(pet, alterDataOption, term, questions, extraAnswers, extraAnswerIndex);
+            System.out.println();
 
             System.out.println("Você deseja fazer mais alguma mudança?");
             System.out.println("[1] Sim;");
             System.out.println("[2] Não.");
             System.out.print("Escolha uma opção: ");
-
             String option = scanner.nextLine();
 
             if (option.equals("2")) {
@@ -291,8 +343,8 @@ public class PetService {
             System.out.println("[1] Sim;");
             System.out.println("[2] Não.");
             System.out.print("Escolha uma opção: ");
-
             String option = scanner.nextLine();
+            System.out.println();
 
             if (option.equals("2")) {
                 System.out.println("Retornando ao menu principal.");
@@ -317,6 +369,7 @@ public class PetService {
 
     public List<Pet> listPetsByCriteria() throws IOException {
         Type typeCriteria = askTypeCriteria();
+        System.out.println();
 
         String nameCriteria = null;
         BiologicalSex biologicalSexCriteria = null;
@@ -356,6 +409,7 @@ public class PetService {
             System.out.println("[8] Raça.");
             System.out.print("Escolha uma opção: ");
             String criteriaOption = scanner.nextLine();
+            System.out.println();
 
             switch (criteriaOption) {
                 case "1" -> {
@@ -421,6 +475,7 @@ public class PetService {
                 default -> System.out.println("Opção inválida.");
             }
         }
+        System.out.println();
 
         return filterPets(typeCriteria, nameCriteria, biologicalSexCriteria, cityCriteria, numberCriteria, streetCriteria, ageCriteria, weightCriteria, raceCriteria);
     }
