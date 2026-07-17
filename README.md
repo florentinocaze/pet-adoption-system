@@ -2,15 +2,21 @@
 
 A command-line pet registration system built in Java, applying Object-Oriented Programming concepts, a layered architecture, and good coding practices.
 
-The system allows an animal shelter manager to register, list, search, update, and delete pets available for adoption, with data persisted in text files.
+The system allows an animal shelter manager to register, list, search, update, and delete pets available for adoption, with data persisted in text files. It also supports a dynamic form: custom questions can be added, edited, and removed beyond the 7 default ones, with their answers stored alongside each pet's registration.
+
+## 🔎 Preview
+
+![System initial menu](assets/screenshot.png)
 
 ## 📌 Features
 
 - Register new pets, with validation for name, type, biological sex, address, age, weight, and race;
+- Answer custom extra questions during registration, if any have been added to the form;
 - List all registered pets;
 - Search pets by up to 3 combined criteria (type is mandatory, plus up to 2 additional ones), ignoring accents and case;
-- Update any pet data except type and biological sex;
-- Delete a pet's registration, with user confirmation.
+- Update any pet data except type and biological sex, including answers to extra questions;
+- Delete a pet's registration, with user confirmation;
+- Manage the registration form: add, edit, and remove extra questions (the original 7 questions are protected and cannot be changed).
 
 ## 💻 Technologies
 
@@ -36,7 +42,7 @@ The system allows an animal shelter manager to register, list, search, update, a
 2. Open the project in your IDE of choice (e.g. IntelliJ IDEA);
 3. Run the `Main` class, located at `src/br/com/florentino/Main.java`.
 
-Registered pets are saved to the `registeredPets/` folder, automatically created in the project root at runtime.
+Registered pets are saved to the `registeredPets/` folder, automatically created in the project root at runtime. Form questions are read from and written to `resources/form.txt`.
 
 ## 🚀 Project structure
 
@@ -51,11 +57,10 @@ src/br/com/florentino/
 └── utils/          → StringFormatter, NumberParser, Constants
 ```
 
-## 📋 In progress
+## 📋 Future implementations
 
 - [ ] Search by registration date (level 2 optional rule);
 - [ ] Highlight the searched term in the results (level 2 optional rule);
-- [ ] Dynamic form: add, edit, and remove extra questions (extra challenge).
 
 ## 🤝 Credits
 
