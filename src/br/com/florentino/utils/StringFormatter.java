@@ -32,16 +32,27 @@ public class StringFormatter {
     }
 
     public static String formatPetDataForDisplay(int index, Pet pet) {
-        return "[" + index + "] " +
-                pet.getName() + " - " +
-                pet.getType().getTypeValue() + " - " +
-                pet.getBiologicalSex().getBiologicalSexValue() + " - " +
-                pet.getAddress().getStreet() + ", " +
-                pet.getAddress().getNumber() + " - " +
-                pet.getAddress().getCity() + " - " +
-                (pet.getAge() == null ? Constants.NOT_INFORMED : (StringFormatter.formatNumber(pet.getAge()) + " anos")) + " - " +
-                (pet.getWeight() == null ? Constants.NOT_INFORMED : (StringFormatter.formatNumber(pet.getWeight()) + " kg")) + " - " +
-                pet.getRace();
+        StringBuilder petData =
+                new StringBuilder(
+                        "[" + index + "] " +
+                        pet.getName() + " – " +
+                        pet.getType().getTypeValue() + " – " +
+                        pet.getBiologicalSex().getBiologicalSexValue() + " – " +
+                        pet.getAddress().getStreet() + ", " +
+                        pet.getAddress().getNumber() + " – " +
+                        pet.getAddress().getCity() + " – " +
+                        (pet.getAge() == null ? Constants.NOT_INFORMED : (StringFormatter.formatNumber(pet.getAge()) + " anos")) + " – " +
+                        (pet.getWeight() == null ? Constants.NOT_INFORMED : (StringFormatter.formatNumber(pet.getWeight()) + " kg")) + " – " +
+                        pet.getRace()
+                );
+
+        if (!pet.getExtraAnswers().isEmpty()) {
+            for (String extraAnswer : pet.getExtraAnswers()) {
+                petData.append(" – ").append(extraAnswer);
+            }
+        }
+
+        return petData.toString();
     }
 
     public static String formatName(String name) {
