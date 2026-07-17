@@ -15,7 +15,7 @@ public class Pet {
     private Double weight;
     private String race;
     private String filePath;
-    private List<String> extraAnswers;
+    private List<String> extraAnswers = new ArrayList<>();
 
     public Pet(String name, Type type, BiologicalSex biologicalSex, Address address, Double age, Double weight, String race) {
         this.name = name;
