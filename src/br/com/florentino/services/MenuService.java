@@ -38,7 +38,6 @@ public class MenuService {
 
             System.out.print("Escolha uma opção: ");
             String startMenuOption = scanner.nextLine();
-            System.out.println();
 
             switch (startMenuOption) {
                 case "1" -> {
@@ -87,6 +86,7 @@ public class MenuService {
                                 System.out.println();
 
                                 System.out.println("[ALTERAÇÃO DE DADO(S) DE PET CADASTRADO]");
+                                System.out.println();
 
                                 try {
                                     petService.updatePet();
