@@ -60,7 +60,7 @@ src/br/com/florentino/
 ## 📋 Future implementations
 
 - [ ] Search by registration date (level 2 optional rule);
-- [ ] Highlight the searched term in the results (level 2 optional rule);
+- [ ] Highlight the searched term in the results (level 2 optional rule).
 
 ## 🤝 Credits
 
