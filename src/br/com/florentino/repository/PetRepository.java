@@ -4,11 +4,9 @@ import br.com.florentino.entity.Address;
 import br.com.florentino.entity.Pet;
 import br.com.florentino.enums.BiologicalSex;
 import br.com.florentino.enums.Type;
-import br.com.florentino.services.FormService;
 import br.com.florentino.utils.Constants;
 import br.com.florentino.utils.NumberParser;
 import br.com.florentino.utils.StringFormatter;
-import br.com.florentino.validator.PetValidator;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -17,7 +15,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class PetRepository {
     public void save(Pet pet, List<String> questions) {
@@ -87,7 +84,7 @@ public class PetRepository {
         }
     }
 
-    public void update(Pet pet, String option, String replacement) {
+    public void update(Pet pet, String option, String replacement, List<String> questions, List<String> extraAnswers, Integer extraAnswerIndex) {
         Path petFilePath = Paths.get(pet.getFilePath());
 
         String newLine;
@@ -161,6 +158,14 @@ public class PetRepository {
                 newLine = "7 – " + pet.getRace();
 
                 editLine(petFilePath, 6, newLine);
+            }
+            case "8" -> {
+                String[] splittedQuestion = questions.get(extraAnswerIndex + 7).split(" – ");
+                String question = splittedQuestion[1];
+
+                newLine = (extraAnswerIndex + 8) + " – " + question + " – " + pet.getExtraAnswers().get(extraAnswerIndex);
+
+                editLine(petFilePath, (extraAnswerIndex + 7), newLine);
             }
         }
     }
@@ -301,7 +306,7 @@ public class PetRepository {
 
             System.out.println("Dado alterado com sucesso!");
         } catch (IOException e) {
-            System.err.println("Erro ao alterar dado.");
+            System.out.println("Erro ao alterar dado.");
         }
     }
 }
