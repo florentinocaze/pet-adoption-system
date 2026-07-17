@@ -23,6 +23,7 @@ public class FormService {
         while (true) {
             System.out.print("Insira a pergunta que você deseja adicionar ao formulário: ");
             String questionToAdd = scanner.nextLine();
+            System.out.println();
 
             formRepository.appendToForm(questionToAdd);
 
